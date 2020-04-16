@@ -1,0 +1,59 @@
+#!/bin/bash
+clear
+
+echo "--------------------------"
+echo "Compiling setMEshEngine..."
+echo "--------------------------"
+echo "Autor: Samuel Espin Tolosa"
+
+
+rm -f temp/*
+
+echo "Compiling sources of core engine"
+echo "--------------------------------"
+
+echo "Compiling src/functions"
+g++ -c src/functions/*.cpp
+
+echo "Compiling src/geometry/structuredHexMesh"
+g++ -c src/geometry/structuredHexMesh.cpp
+
+echo "Compiling src/geometry/octreeSHM"
+g++ -c src/geometry/octreeSHM.cpp
+
+echo "Compiling src/logs"
+g++ -c src/logs/*.cpp
+
+#echo "Compiling src/functions"
+#g++ -c src/materials/*.cpp
+
+echo "Compiling src/maths"
+g++ -c src/maths/*.cpp
+
+#echo "Compiling src/functions"
+#g++ -c src/phase/*.cpp
+
+echo "Compiling src/glfw"
+g++ -c src/glfw/*.cpp
+
+echo "Compiling main"
+g++ -c main.cpp
+
+g++ -std=c++11 -o main main.o setfun.o structuredHexMesh.o octreeSHM.o log.o vec3.o vec3operations.o window.o -Wall -lGL -lGLU -lglut -lGLEW -lglfw -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor
+
+
+
+#rm *.o
+
+echo "--------------------------"
+echo "Running setMEshEngine......"
+echo "--------------------------"
+time ./main
+
+echo "--------------------------"
+echo "Done setMEshEngine........"
+echo "--------------------------"
+echo inserting headers temp/meshIO...
+sed -i '1 i\\x, y, z, level' temp/meshIO_*
+zip -r temp.zip temp/
+mv temp.zip ~/temp.zip

@@ -1,0 +1,6 @@
+Create a class to store tree structure with leaf structure.
+
+La tabla de datos debera almacenar en cada instante la posicion de las hojas del arbol y debera guardar en cada hoja un puntero con la ID de todos los puntos que estan siendo trackeados en el arbol.
+
+El motivo de hacer esto es que parece mas facil para calcular interacciones entre puntos ir a cada hoja del arbol y hacer los calculos para los puntos que esten dentro de esa hoja,
+en lugar de ir a cada punto a comprobar si pertenece a la misma hoja que otro punto para hacer el calculo.
