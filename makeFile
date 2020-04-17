@@ -39,7 +39,7 @@ g++ -c src/glfw/*.cpp
 echo "Compiling main"
 g++ -c main.cpp
 
-g++ -std=c++11 -o main main.o setfun.o structuredHexMesh.o octreeSHM.o log.o vec3.o vec3operations.o window.o -Wall -lGL -lGLU -lglut -lGLEW -lglfw -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor
+g++ -std=c++11 -o main main.o setfun.o structuredHexMesh.o octreeSHM.o log.o vec3.o window.o -Wall -lGL -lGLU -lglut -lGLEW -lglfw -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor
 
 
 

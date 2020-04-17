@@ -20,6 +20,9 @@ class Window
 
 		public:
 			double xMouse, yMouse;
+			static float Displace_Axis_X;
+			static float Displace_Axis_Y;
+			static float Displace_Axis_Z;
 			static bool Rotation_Axis_X;
 			static bool Rotation_Axis_Y;
 			static bool Rotation_Axis_Z;

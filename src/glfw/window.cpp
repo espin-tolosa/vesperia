@@ -41,17 +41,19 @@ void Window::update(structuredHexMesh* mesh)
 	double dark_green[3] = {0.0, 0.5, 0.3};
 	glfwGetCursorPos(m_Window, &xMouse, &yMouse);
 	//std::cout << "Mouse Position: X= " << xMouse << " Y= " << yMouse << std::endl; 
-	glClearColor(xMouse/800.0, yMouse/600.0, 0.0,  0.1); 
+	glClearColor(0.01, 0.01, 0.01, 0.1); 
     	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
 	//Display the cube
         glMatrixMode(GL_PROJECTION_MATRIX);
         glLoadIdentity();
-        gluPerspective( 120, (double)m_Width / (double)m_Height, m_ZNear, m_ZFar );
+        gluPerspective( -60, (double)m_Width / (double)m_Height, m_ZNear, m_ZFar );
         glMatrixMode(GL_MODELVIEW_MATRIX);
-	//std::cout << "CAMERA UPDOW POSITION: " << Camera_UpDown_Position << std::endl;
-	glTranslatef(0,0,-0.01*Camera_UpDown_Position);
-    	//attempt to rotate cube
+	std::cout << "CAMERA UPDOW POSITION: " << Displace_Axis_Z << std::endl;
+//	glTranslatef(0,0,-0.01*Camera_UpDown_Position);
+
+	glTranslatef(Displace_Axis_X, Displace_Axis_Y, Displace_Axis_Z);
+//attempt to rotate cube
     	glRotatef(xMouse, Rotation_Axis_X, Rotation_Axis_Y, Rotation_Axis_Z);
 		//drawCube(xMouse);
 		//drawTetrahedron(xMouse);
@@ -321,13 +323,37 @@ void Window::keyCallback(GLFWwindow *window, int key, int scancode, int action, 
 		else if(key == 51){		
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
-		else if(key == 265){
-			Window::Camera_UpDown_Position -= 10.0f;
-		}
 		else if(key == 264){
-			std::cout << Window::Camera_UpDown_Position << std::endl;
-			Window::Camera_UpDown_Position += 10.0f;
+			Window::Displace_Axis_Y -= 0.01f;
+		}
+		else if(key == 265){
+			Window::Displace_Axis_Y += 0.01f;
+		}
+		else if(key == 263){
+			Window::Displace_Axis_X -= 0.01f;
+		}
+		else if(key == 262){
+			Window::Displace_Axis_X += 0.01f;
+		}
+		else if(key == 32){
+			Window::Displace_Axis_Z -= 0.1f;
 		}
 
 	}
 }
+
+
+/*
+		else if(key == 265){
+			Window::Displace_Axis_X -= 10.0f;
+		}
+		else if(key == 264){
+			Window::Displace_Axis_X += 10.0f;
+
+		else if(key == 263){
+			Window::Displace_Axis_Y -= 10.0f;
+		}
+		else if(key == 262){
+			Window::Displace_Axis_Y += 10.0f;
+		}
+		*/

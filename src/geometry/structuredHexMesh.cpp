@@ -79,15 +79,24 @@ structuredHexMesh::structuredHexMesh(std::string name)
 structuredHexMesh::structuredHexMesh(std::string name, unsigned UpperLevel_Divided_Cells)
 
     :	m_name(name),
-	m_H(3), m_W(3), m_L(3), m_HW(3*3),
-        m_Vertex_Population(3*3*3*UpperLevel_Divided_Cells),
-        m_Volume_Population((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells),
-        Mesh(m_L*m_H*m_W*UpperLevel_Divided_Cells),
-        Cell_Centroids((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells),
-        Cell_Divided((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells, false),
-        Face_UNormals((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells*6),
-        Face_Centroids((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells*6),
-        Boundary_Cell((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells, false)
+
+		m_H(3), m_W(3), m_L(3), m_HW(3*3),
+
+		m_Vertex_Population(3*3*3*UpperLevel_Divided_Cells),
+
+		m_Volume_Population((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells),
+
+		Mesh(m_L*m_H*m_W*UpperLevel_Divided_Cells),
+
+		Cell_Centroids((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells),
+
+		Cell_Divided((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells, false),
+
+		Face_UNormals((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells*6),
+
+		Face_Centroids((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells*6),
+
+		Boundary_Cell((3-1)*(3-1)*(3-1)*UpperLevel_Divided_Cells, false)
     {
 	std::cout<<"\n[CONSTRUCTOR]: Structured Mesh\n"<<std::endl;
     }
@@ -95,21 +104,35 @@ structuredHexMesh::structuredHexMesh(std::string name, unsigned UpperLevel_Divid
 structuredHexMesh::structuredHexMesh(std::string name, unsigned nel_TSx, unsigned nel_TSy, unsigned nel_TSz)
 
     :	m_name(name),
-	m_H(nel_TSz), m_W(nel_TSx), m_L(nel_TSy),
-        m_Vertex_Population(nel_TSz*nel_TSx*nel_TSy), m_Face_Population(0), m_Volume_Population((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1)),
-        m_id(0), m_Total_Volume(0.0), m_cell_Volume(0.0),
-        Mesh(nel_TSz*nel_TSx*nel_TSy),
-        Cell_Centroids((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1)),
-        Cell_Divided((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1), false),
-        Face_UNormals((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1)*6),
-        Face_Centroids((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1)*6),
-        Boundary_Cell((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1),false),
-        Vertex(), Edge_i(), Edge_j(), Tris(), Quad(),
+		
+		m_H(nel_TSz), m_W(nel_TSx), m_L(nel_TSy),
+        
+		m_Vertex_Population(nel_TSz*nel_TSx*nel_TSy), m_Face_Population(0), m_Volume_Population((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1)),
+        
+		m_id(0), m_Total_Volume(0.0), m_cell_Volume(0.0),
+        
+		Mesh(nel_TSz*nel_TSx*nel_TSy),
+        
+		Cell_Centroids((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1)),
+
+		Cell_Divided((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1), false),
+		//Cell_Divided((1), false),
+
+		Face_UNormals((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1)*6),
+        
+		Face_Centroids((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1)*6),
+		//Face_Centroids(1),
+        
+		Boundary_Cell((nel_TSz-1)*(nel_TSx-1)*(nel_TSy-1),false),
+        
+		Vertex(), Edge_i(), Edge_j(), Tris(), Quad(),
+		
 		Total_Cell_Divided(0)
-        {
-		m_HW = m_H*m_W;
-		std::cout<<"\n[CONSTRUCTOR]: Structured Mesh\n"<<std::endl;
-	}
+        
+		{
+			m_HW = m_H*m_W;
+			std::cout<<"\n[CONSTRUCTOR]: Structured Mesh\n"<<std::endl;
+		}
 
 structuredHexMesh::~structuredHexMesh()
     {
@@ -155,10 +178,10 @@ structuredHexMesh::~structuredHexMesh()
     }
 
 
-    double structuredHexMesh::AreaC3(const vec3& p1, const vec3& p2, const vec3& p3)
+    float structuredHexMesh::AreaC3(const vec3& p1, const vec3& p2, const vec3& p3)
     {
         vec3 W = vec3::Cross(p1,p2,p3);
-        return 0.5*sqrtl(W.x*W.x + W.y*W.y + W.z*W.z);
+        return 0.5*sqrtf(W.x*W.x + W.y*W.y + W.z*W.z);
     }
 
 /**
@@ -173,7 +196,7 @@ structuredHexMesh::~structuredHexMesh()
 **/
     vec3 structuredHexMesh::CenterC3(const vec3& p1, const vec3& p2, const vec3& p3)
         {
-            double i = 1./3.; //Multiplications are most efficient than divisions
+            float i = 1.f/3.f; //Multiplications are most efficient than divisions
 
             float x = (p1.x + p2.x + p3.x) * i;
             float y = (p1.y + p2.y + p3.y) * i;
@@ -185,37 +208,33 @@ structuredHexMesh::~structuredHexMesh()
 
     vec3 structuredHexMesh::CenterT4(const vec3& v0, const vec3& v1, const vec3& v2, const vec3& v3)
     {
-            double i = 1./4.; //Multiplications are most efficient than divisions
-            double x = (v0.x + v1.x + v2.x + v3.x) * i;
-            double y = (v0.y + v1.y + v2.y + v3.y) * i;
-            double z = (v0.z + v1.z + v2.z + v3.z) * i;
+            float i = 1.f/4.f; //Multiplications are most efficient than divisions
+            float x = (v0.x + v1.x + v2.x + v3.x) * i;
+            float y = (v0.y + v1.y + v2.y + v3.y) * i;
+            float z = (v0.z + v1.z + v2.z + v3.z) * i;
 
             return vec3(x,y,z);
     }
 
-    double structuredHexMesh::VolumeT4(const vec3& v0, const vec3& v1, const vec3& v2, const vec3& v3)
+    float structuredHexMesh::VolumeT4(const vec3& v0, const vec3& v1, const vec3& v2, const vec3& v3)
     {
-        double v1v2v3 = vec3::DotCross(v0,v1,v2,v3);
-        return (sqrtl(v1v2v3*v1v2v3) / 6.);
+        float v1v2v3 = vec3::DotCross(v0,v1,v2,v3);
+        return (sqrtf(v1v2v3*v1v2v3) / 6.f);
     }
 
     vec3 structuredHexMesh::CenterC4(const vec3& v0, const vec3& v1, const vec3& v2, const vec3& v3)
         {
-
-        ///LA FUNCION AREAC3 está anulada porque produce una pequeña inestabilidad al usarlo en la media ponderada del centro de la cara
             vec3 C1 = structuredHexMesh::CenterC3(v0,v1,v2);
-            double ac1 = structuredHexMesh::AreaC3(v0,v1,v2);
-
             vec3 C2 = structuredHexMesh::CenterC3(v0,v2,v3);
-            double ac2 = structuredHexMesh::AreaC3(v0,v2,v3);
-
             vec3 D1 = structuredHexMesh::CenterC3(v0,v1,v3);
-            double ad1 = structuredHexMesh::AreaC3(v0,v1,v3);
-
             vec3 D2 = structuredHexMesh::CenterC3(v1,v2,v3);
-            double ad2 = structuredHexMesh::AreaC3(v1,v2,v3);
 
-            double x1,y1,z1,x2,y2,z2;
+	    float ac1 = structuredHexMesh::AreaC3(v0,v1,v2);
+            float ac2 = structuredHexMesh::AreaC3(v0,v2,v3);
+            float ad1 = structuredHexMesh::AreaC3(v0,v1,v3);
+            float ad2 = structuredHexMesh::AreaC3(v1,v2,v3);
+
+            float x1,y1,z1,x2,y2,z2;
 
             x1 = (C1.x*ac1+C2.x*ac2)/(ac1+ac2);
             y1 = (C1.y*ac1+C2.y*ac2)/(ac1+ac2);
@@ -225,9 +244,9 @@ structuredHexMesh::~structuredHexMesh()
             y2 = (D1.y*ad1+D2.y*ad2)/(ad1+ad2);
             z2 = (D1.z*ad1+D2.z*ad2)/(ad1+ad2);
 
-            double x = 0.5*(x1+x2);
-            double y = 0.5*(y1+y2);
-            double z = 0.5*(z1+z2);
+            float x = 0.5f*(x1+x2);
+            float y = 0.5f*(y1+y2);
+            float z = 0.5f*(z1+z2);
 
             return vec3(x,y,z);
         }
@@ -245,7 +264,7 @@ structuredHexMesh::~structuredHexMesh()
 
 
 	    //reset any carried value of Total Volume for cases of recursively calling CenterC8
-	    m_Total_Volume = 0.;
+	    m_cell_Volume = 0.;
 
             vec3 cL = structuredHexMesh::CenterC4(v0,v1,v2,v3);
             vec3 cR = structuredHexMesh::CenterC4(v4,v7,v6,v5);
@@ -292,7 +311,7 @@ structuredHexMesh::~structuredHexMesh()
 	    //shell center (surface average) actually obsolete, it was ussed before created cell_center    
 	    vec3 Shell_centroid;
 
-            double i = 1./6.;
+            float i = 1.f/6.f;
 
             Shell_centroid.x = (cL.x + cR.x + cB.x + cF.x + cS.x + cN.x) * i;
             Shell_centroid.y = (cL.y + cR.y + cB.y + cF.y + cS.y + cN.y) * i;
@@ -300,7 +319,7 @@ structuredHexMesh::~structuredHexMesh()
 
 	    vec3 centerP;
 	    vec3    s;
-	    double as;
+	    float as;
             
 	    s = structuredHexMesh::CenterT4(Shell_centroid,v0,v1,v3);
             as = structuredHexMesh::VolumeT4(Shell_centroid,v0,v1,v3);
@@ -386,6 +405,7 @@ structuredHexMesh::~structuredHexMesh()
 	    centerP.z += as*s.z;
        	    m_cell_Volume += as;
 
+	    std::cout << "Cell ID: " << m_id << "CELL VOLUME: " << m_cell_Volume << std::endl;
             m_Total_Volume += m_cell_Volume;
 
             vec3 centerS;
@@ -421,7 +441,7 @@ structuredHexMesh::~structuredHexMesh()
  *
  * add ForEach procedure to simplify the Loop sintaxis
  * ------------------------------------------------------*/
-void structuredHexMesh::SweepFace(const vec3* Surface, const int& nel_TSx, const int& nel_TSz, const int& nel_Sweep, const double& delta_Sweep, const vec3& Origin_Sweep)
+void structuredHexMesh::SweepFace(const vec3* Surface, const int& nel_TSx, const int& nel_TSz, const int& nel_Sweep, const float& delta_Sweep, const vec3& Origin_Sweep)
 {
 //    if(Mesh==0)
 //    {
@@ -433,7 +453,7 @@ void structuredHexMesh::SweepFace(const vec3* Surface, const int& nel_TSx, const
 			Mesh[i] = *(Surface++);
 			std::cout << "Mesh element" << Mesh[i] << std::endl;
 			for (int j = 0; j < nel_Sweep; j++) {
-				Mesh[i+(j+1)*m_H*m_W] = vec3::Loc2Glob(vec3::RotZ(vec3::Glob2Loc(Mesh[i],Origin_Sweep),(j+1)*delta_Sweep), Origin_Sweep);
+				Mesh[i+(j+1)*m_H*m_W] = vec3::Loc2Glob(vec3::RotZ(vec3::Glob2Loc(Mesh[i], Origin_Sweep),(j+1)*delta_Sweep), Origin_Sweep);
 			}
 		}
     
@@ -468,7 +488,7 @@ bool structuredHexMesh::vertexSearchCell(const vec3& point)
 {
 	for (int i=0; i<6 ;i++) //It will placed here ForEach
 	{
-		if(vec3::Dot(vec3::Glob2Loc(point, Face_Centroids[m_id*6 + i]), Face_UNormals[m_id*6 + i]) > 0.0000000001)
+		if(vec3::Dot(vec3::Glob2Loc(point, Face_Centroids[m_id*6 + i]), Face_UNormals[m_id*6 + i]) > 0.00001)
 		{
 			return false;
 		}
@@ -521,7 +541,7 @@ const void structuredHexMesh::LogMembers() const
 {
 	std::cout << "Mesh: " << m_name << std::endl;
 	std::cout << "-------------------------------------" << std::endl;
-
+	std::cout << "Total Volume of Mesh: " << m_Total_Volume << std::endl;
 	std::cout << "Internal ID cell (m_id): " << m_id << std::endl;
 
 }
@@ -633,7 +653,7 @@ void structuredHexMesh::WriteMesh(std::ofstream *meshFileOF, std::string nameFil
 
 // GLFW SEND DATA TO BUFFER
 
-void structuredHexMesh::drawMesh(double alpha0) {
+void structuredHexMesh::drawMesh(float alpha0) {
 
 //for(unsigned id=0; id < this->Log_Cells_Max(); id++) {
 
@@ -684,7 +704,7 @@ for(unsigned id=0; id < this->Log_Cells_Max(); id++) {
 
 //    static float alpha = 0.0f;
 
-    GLdouble vertices[] =
+    GLfloat vertices[] =
     {
         Vertex[0]->x, Vertex[0]->y, Vertex[0]->z, Vertex[3]->x, Vertex[3]->y, Vertex[3]->z, Vertex[4]->x, Vertex[4]->y, Vertex[4]->z, Vertex[7]->x, Vertex[7]->y, Vertex[7]->z, //S
         Vertex[1]->x, Vertex[1]->y, Vertex[1]->z, Vertex[2]->x, Vertex[2]->y, Vertex[2]->z, Vertex[6]->x, Vertex[6]->y, Vertex[6]->z, Vertex[5]->x, Vertex[5]->y, Vertex[5]->z, //N
@@ -701,14 +721,19 @@ std::cout << *Vertex[2] << "; " << *Vertex[4] << "; " << *Vertex[5] << "; " << *
 std::cout << *Vertex[2] << "; " << *Vertex[3] << "; " << *Vertex[7] << "; " << *Vertex[6] << std::endl;
 std::cout << *Vertex[0] << "; " << *Vertex[1] << "; " << *Vertex[5] << "; " << *Vertex[4] << std::endl;
 */
+
+    //dark_green[3] = {0.0, 0.5, 0.3};
+float r{0.3}, g{0.5}, b{0.1};
+
     GLfloat colors[] =
     {
-        0, 0, 0,   0, 0, 0,   0, 0, 0,   0, 0, 0,
-        0, 0, 0,   0, 0, 0,   0, 0, 0,   0, 0, 0,
-        0, 0, 0,   0, 0, 0,   0, 0, 0,   0, 0, 0,
-        0, 0, 0,   0, 0, 0,   0, 0, 0,   0, 0, 0,
-        0, 0, 0,   0, 0, 0,   0, 0, 0,   0, 0, 0,
-        0, 0, 0,   0, 0, 0,   0, 0, 0,   0, 0, 0
+
+	r,g,b,	r,g,b,	r,g,b,	r,g,b,
+	r,g,b,	r,g,b,	r,g,b,	r,g,b,
+	r,g,b,	r,g,b,	r,g,b,	r,g,b,
+	r,g,b,	r,g,b,	r,g,b,	r,g,b,
+	r,g,b,	r,g,b,	r,g,b,	r,g,b,
+	r,g,b,	r,g,b,	r,g,b,	r,g,b
     };
 
 
@@ -719,7 +744,7 @@ std::cout << *Vertex[0] << "; " << *Vertex[1] << "; " << *Vertex[5] << "; " << *
     /* We have a color array and a vertex array */
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
-    glVertexPointer(3, GL_DOUBLE, 0, vertices);
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
     glColorPointer(3, GL_FLOAT, 0, colors);
 
     /* Send data : 24 vertices */

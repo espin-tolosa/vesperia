@@ -10,6 +10,10 @@ unsigned octreeSHM::Depth = 0;
 float Window::time_since_last_key_pressed = 0.0f;
 float Window::Camera_UpDown_Position = 0.0f;
 
+float Window::Displace_Axis_X = 0.0f;
+float Window::Displace_Axis_Y = 0.0f;
+float Window::Displace_Axis_Z = 0.0f;
+
 bool Window::Rotation_Axis_X = 0;
 bool Window::Rotation_Axis_Y = 0;
 bool Window::Rotation_Axis_Z = 0;
